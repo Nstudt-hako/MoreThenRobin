@@ -1,7 +1,7 @@
-# GitHub Actions workflow to build Android APK and iOS app
+# GitHub Actions workflow to build and deploy web app to GitHub Pages
 # This workflow runs on push and pull request events to main branch
 
-name: Build Android and iOS Apps
+name: Build and Deploy Web App
 
 on:
   push:
@@ -10,12 +10,18 @@ on:
     branches: [main]
 
 jobs:
-  build-android:
-    name: Build Android APK
+  build-and-deploy:
+    name: Build and Deploy to GitHub Pages
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./fish-catch-leaderboard
+    
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,77 +29,33 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '18'
           cache: 'npm'
           cache-dependency-path: './fish-catch-leaderboard/package-lock.json'
           
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-        
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-        
       - name: Install dependencies
         run: npm ci
         
       - name: Run tests
-        run: npm test
+        run: npm test -- --coverage --watchAll=false
         
       - name: Run linter
-        run: npm run lint -- --max-warnings 100
+        run: npm run lint
         
-      - name: Make gradlew executable
-        run: chmod +x android/gradlew
+      - name: Build application
+        run: npm run build
         
-      - name: Build Android Debug APK
-        run: |
-          cd android
-          ./gradlew assembleDebug --no-daemon
+      - name: Setup Pages
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './fish-catch-leaderboard/build'
           
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-debug.apk
-          path: fish-catch-leaderboard/android/app/build/outputs/apk/debug/app-debug.apk
-
-  build-ios:
-    name: Build iOS App
-    runs-on: macos-latest
-    defaults:
-      run:
-        working-directory: ./fish-catch-leaderboard
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Install dependencies
-        run: npm install
-      - name: Install CocoaPods
-        run: |
-          sudo gem install cocoapods
-          cd ios && pod install
-      - name: Build iOS app
-        run: |
-          cd ios
-          xcodebuild -workspace fish-catch-leaderboard.xcworkspace -scheme fish-catch-leaderboard -sdk iphonesimulator -configuration Debug build
-      - name: Upload iOS build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ios-build
-          path: fish-catch-leaderboard/ios/build
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        id: deployment
+        uses: actions/deploy-pages@v4
