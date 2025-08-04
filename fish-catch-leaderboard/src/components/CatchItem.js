@@ -16,7 +16,7 @@ const CatchItem = ({ catchData }) => {
                     <p><strong>Size:</strong> {size} cm</p>
                     <p><strong>Angler:</strong> {angler || 'Anonymous'}</p>
                     {location && <p><strong>Location:</strong> {location}</p>}
-                    <p><strong>Caught:</strong> {new Date(timestamp?.toDate?.() || timestamp).toLocaleDateString()}</p>
+                    <p><strong>Caught:</strong> {new Date(timestamp?.toDate ? timestamp.toDate() : timestamp).toLocaleDateString()}</p>
                 </div>
             </div>
             {photo && (

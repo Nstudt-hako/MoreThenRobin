@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { db } from '../api/firebase';
+import { getLeaderboardData } from '../api/firebase';
 import { ThemeContext } from '../context/ThemeContext';
 import CatchItem from './CatchItem';
 import './LeaderboardList.css';
@@ -14,17 +14,18 @@ const LeaderboardList = ({ data }) => {
             return;
         }
 
-        const unsubscribe = db.collection('catches')
-            .orderBy('size', 'desc')
-            .onSnapshot(snapshot => {
-                const catchesData = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-                setCatches(catchesData);
-            });
+        // Use the mock data function instead of Firebase collection
+        const fetchData = async () => {
+            try {
+                const leaderboardData = await getLeaderboardData();
+                setCatches(leaderboardData);
+            } catch (error) {
+                console.error('Error fetching leaderboard data:', error);
+                setCatches([]);
+            }
+        };
 
-        return () => unsubscribe();
+        fetchData();
     }, [data]);
 
     if (catches.length === 0) {
