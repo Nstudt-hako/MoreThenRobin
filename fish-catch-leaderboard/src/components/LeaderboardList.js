@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { db } from '../api/firebase';
-import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import CatchItem from './CatchItem';
 import './LeaderboardList.css';
 
 const LeaderboardList = ({ data }) => {
     const [catches, setCatches] = useState(data || []);
-    const { user } = useContext(AuthContext);
     const { theme } = useContext(ThemeContext);
 
     useEffect(() => {

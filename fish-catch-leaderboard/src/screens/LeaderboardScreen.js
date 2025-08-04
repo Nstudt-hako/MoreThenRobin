@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
 import LeaderboardList from '../components/LeaderboardList';
-import { AuthContext } from '../context/AuthContext';
 import { getLeaderboardData } from '../api/firebase';
 import { ThemeContext } from '../context/ThemeContext';
 import './LeaderboardScreen.css';
 
 const LeaderboardScreen = () => {
-    const { user } = useContext(AuthContext);
     const { theme } = useContext(ThemeContext);
     const [leaderboardData, setLeaderboardData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -17,7 +15,7 @@ const LeaderboardScreen = () => {
                 const data = await getLeaderboardData();
                 setLeaderboardData(data);
             } catch (error) {
-                console.error("Error fetching leaderboard data: ", error);
+                // Error fetching leaderboard data - silently fail for production
             } finally {
                 setLoading(false);
             }
