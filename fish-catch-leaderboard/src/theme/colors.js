@@ -1,4 +1,4 @@
-export const colors = {
+const colors = {
   primary: '#6200EE',
   primaryVariant: '#3700B3',
   secondary: '#03DAC6',
@@ -8,6 +8,11 @@ export const colors = {
   text: '#FFFFFF',
   textSecondary: '#B0B0B0',
   border: '#BB86FC',
+  // Common colors
+  white: '#FFFFFF',
+  black: '#000000',
+  lightGray: '#E5E5E5',
+  darkGray: '#333333',
   // Light mode colors
   light: {
     background: '#FFFFFF',
@@ -23,3 +28,6 @@ export const colors = {
     textSecondary: '#B0B0B0',
   },
 };
+
+export { colors };
+export default colors;

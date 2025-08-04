@@ -57,7 +57,7 @@ const HomeScreen = () => {
                     <div className="feature-card" style={{ backgroundColor: theme.surface }}>
                         <div className="feature-icon">🏆</div>
                         <h3>Compete with Friends</h3>
-                        <p>See who's catching the biggest fish on the leaderboard</p>
+                        <p>See who&apos;s catching the biggest fish on the leaderboard</p>
                     </div>
                     <div className="feature-card" style={{ backgroundColor: theme.surface }}>
                         <div className="feature-icon">📱</div>

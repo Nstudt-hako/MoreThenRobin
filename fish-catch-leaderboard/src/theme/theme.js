@@ -1,11 +1,9 @@
-import { DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { Platform } from 'react-native';
-import colors from './colors';
+import { colors } from './colors';
 
 const common = {
   borderRadius: 8,
   spacing: 16,
-  fontFamily: Platform.OS === 'ios' ? 'Avenir' : 'Roboto',
+  fontFamily: 'Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
 };
 
 export const lightTheme = {
