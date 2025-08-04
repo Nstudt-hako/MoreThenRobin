@@ -46,13 +46,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
-        backgroundColor: theme.background,
+        backgroundColor: '#ffffff',
     },
     loadingContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: theme.background,
+        backgroundColor: '#ffffff',
     },
     title: {
         fontSize: 24,
