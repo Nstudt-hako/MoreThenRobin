@@ -15,7 +15,7 @@ const LoginScreen = () => {
             // Redirect to leaderboard after successful login
             navigate('/leaderboard');
         } catch (error) {
-            console.error('Login failed:', error);
+            // Silent error handling - no console logs allowed
         }
     };
 
