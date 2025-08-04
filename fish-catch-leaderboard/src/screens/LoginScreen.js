@@ -1,13 +1,36 @@
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../context/ThemeContext';
+import { AuthContext } from '../context/AuthContext';
 
 const LoginScreen = () => {
     const { theme } = useContext(ThemeContext);
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleLogin = async () => {
+        try {
+            // Auto-login with demo user
+            await login('demo@example.com');
+            // Redirect to leaderboard after successful login
+            navigate('/leaderboard');
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
+    };
 
     return (
-        <div style={{ padding: '2rem', textAlign: 'center', color: theme.text }}>
-            <h1 style={{ color: theme.primary }}>Login</h1>
-            <p>Authentication is coming soon! You&apos;ll be able to login and manage your profile here.</p>
+        <div className="login-container" style={{ color: theme.text }}>
+            <h1 style={{ color: theme.primary }}>🎣 Login</h1>
+            <p style={{ marginBottom: '2rem', opacity: 0.8 }}>
+                Click the login button below to automatically sign in as a demo user and explore the leaderboard with mock fishing data.
+            </p>
+            <button 
+                onClick={handleLogin}
+                className="btn"
+            >
+                Login as Demo User
+            </button>
         </div>
     );
 };
