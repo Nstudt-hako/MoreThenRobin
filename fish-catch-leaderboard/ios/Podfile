@@ -1,10 +1,9 @@
-require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require File.join(File.dirname(`node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
 require File.join(File.dirname(`node --print "require.resolve('@react-native-community/cli-platform-ios/package.json')"`), "native_modules")
 
 platform :ios, '11.0'
 
-target 'FishCatchLeaderboard' do
+target 'fish-catch-leaderboard' do
   config = use_native_modules!
 
   use_react_native!(
@@ -13,7 +12,7 @@ target 'FishCatchLeaderboard' do
     :hermes_enabled => false
   )
 
-  target 'FishCatchLeaderboardTests' do
+  target 'fish-catch-leaderboardTests' do
     inherit! :complete
     # Pods for testing
   end
