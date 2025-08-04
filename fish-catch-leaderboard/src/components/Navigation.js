@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import ThemeToggle from './ThemeToggle';
-import './Navigation.css';
 
 const Navigation = () => {
   const { user, logout } = useContext(AuthContext);

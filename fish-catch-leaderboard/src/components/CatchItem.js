@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
-import './CatchItem.css';
 
 const CatchItem = ({ catchData }) => {
     const { species, size, location, angler, timestamp, photo } = catchData;

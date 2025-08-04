@@ -1,6 +1,6 @@
 # More Than Robin - Fish Catch Leaderboard
 
-Eine Web-Anwendung zum Verfolgen und Vergleichen von Angelausgängen zwischen Anglern.
+Eine vereinfachte Web-Anwendung zum Verfolgen und Vergleichen von Angelausgängen zwischen Anglern.
 
 ## 🌐 Live Demo
 
@@ -11,7 +11,7 @@ Die App ist auf GitHub Pages verfügbar: [https://Nstudt-hako.github.io/MoreThen
 - **Leaderboard**: Sieh die größten Fänge aller Angler
 - **Responsive Design**: Funktioniert auf Desktop und Mobile
 - **Dark/Light Theme**: Automatische Theme-Erkennung mit manueller Umschaltung
-- **Modern UI**: Saubere, benutzerfreundliche Oberflächer
+- **Vereinfachte Architektur**: Reduzierte Komplexität für bessere Wartbarkeit
 
 ## 🚀 Lokale Entwicklung
 
@@ -22,11 +22,32 @@ npm install
 # Entwicklungsserver starten
 npm start
 
-# Build für Produktion erstellen
-npm run build
+# Build für Produktion erstellen und deployen
+npm run deploy
+```
 
-# Tests ausführen
-npm test
+## 🏗️ Vereinfachungen (August 2025)
+
+Die Anwendung wurde vereinfacht, um Overhead zu reduzieren:
+
+- **Konsolidierte CSS**: Alle Styles in einer einzigen `main.css` Datei
+- **Vereinfachtes Theme-System**: Themes direkt in ThemeContext definiert
+- **Reduzierte Dependencies**: Firebase und unnötige dev-dependencies entfernt
+- **Vereinfachte API**: Streamlined mock data structure
+- **Weniger Helper Functions**: Nur noch die wichtigsten Utility-Funktionen
+- **Optimiertes Routing**: Vereinfachte Route-Struktur
+
+## 📁 Projektstruktur
+
+```
+src/
+├── components/        # React-Komponenten
+├── context/          # React Context (Auth & Theme)
+├── screens/          # Screen-Komponenten
+├── utils/            # Utility-Funktionen
+├── api/              # Mock API
+└── main.css          # Alle Styles
+```
 
 # Linting
 npm run lint

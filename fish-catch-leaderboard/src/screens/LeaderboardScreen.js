@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import LeaderboardList from '../components/LeaderboardList';
 import { getLeaderboardData } from '../api/firebase';
 import { ThemeContext } from '../context/ThemeContext';
-import './LeaderboardScreen.css';
 
 const LeaderboardScreen = () => {
     const { theme } = useContext(ThemeContext);

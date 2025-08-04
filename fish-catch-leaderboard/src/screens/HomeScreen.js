@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
-import './HomeScreen.css';
 
 const HomeScreen = () => {
     const { user } = useContext(AuthContext);

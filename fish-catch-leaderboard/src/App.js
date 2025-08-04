@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import HomeScreen from './screens/HomeScreen';
@@ -8,7 +8,7 @@ import AddCatchScreen from './screens/AddCatchScreen';
 import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import Navigation from './components/Navigation';
-import './App.css';
+import './main.css';
 
 const App = () => {
   return (
@@ -19,7 +19,7 @@ const App = () => {
             <Navigation />
             <main className="main-content">
               <Routes>
-                <Route path="/" element={<Navigate to="/home" replace />} />
+                <Route path="/" element={<HomeScreen />} />
                 <Route path="/home" element={<HomeScreen />} />
                 <Route path="/leaderboard" element={<LeaderboardScreen />} />
                 <Route path="/add-catch" element={<AddCatchScreen />} />

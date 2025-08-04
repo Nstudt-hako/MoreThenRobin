@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import { getLeaderboardData } from '../api/firebase';
 import { ThemeContext } from '../context/ThemeContext';
 import CatchItem from './CatchItem';
-import './LeaderboardList.css';
 
 const LeaderboardList = ({ data }) => {
     const [catches, setCatches] = useState(data || []);
@@ -20,6 +19,7 @@ const LeaderboardList = ({ data }) => {
                 const leaderboardData = await getLeaderboardData();
                 setCatches(leaderboardData);
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.error('Error fetching leaderboard data:', error);
                 setCatches([]);
             }
