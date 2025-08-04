@@ -1,15 +1,18 @@
 import React, { useContext } from 'react';
-import { Switch } from 'react-native';
 import { ThemeContext } from '../context/ThemeContext';
+import './ThemeToggle.css';
 
 const ThemeToggle = () => {
-    const { theme, toggleTheme } = useContext(ThemeContext);
+    const { isDark, toggleTheme } = useContext(ThemeContext);
 
     return (
-        <Switch
-            value={theme === 'dark'}
-            onValueChange={toggleTheme}
-        />
+        <button 
+            className={`theme-toggle ${isDark ? 'dark' : 'light'}`}
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+        >
+            {isDark ? '☀️' : '🌙'}
+        </button>
     );
 };
 

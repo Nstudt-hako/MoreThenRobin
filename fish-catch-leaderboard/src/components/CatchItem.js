@@ -1,30 +1,31 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
+import React, { useContext } from 'react';
+import { ThemeContext } from '../context/ThemeContext';
+import './CatchItem.css';
 
 const CatchItem = ({ catchData }) => {
-    const { type, size, time } = catchData;
-    const { colors } = useTheme();
+    const { species, size, location, angler, timestamp, photo } = catchData;
+    const { theme } = useContext(ThemeContext);
 
     return (
-        <View style={[styles.container, { backgroundColor: colors.card }]}>
-            <Text style={[styles.text, { color: colors.text }]}>Type: {type}</Text>
-            <Text style={[styles.text, { color: colors.text }]}>Size: {size} cm</Text>
-            <Text style={[styles.text, { color: colors.text }]}>Time: {new Date(time).toLocaleString()}</Text>
-        </View>
+        <div className="catch-item" style={{ backgroundColor: theme.surface, color: theme.text }}>
+            <div className="catch-info">
+                <h3 className="catch-species" style={{ color: theme.primary }}>
+                    🐟 {species || 'Unknown Species'}
+                </h3>
+                <div className="catch-details">
+                    <p><strong>Size:</strong> {size} cm</p>
+                    <p><strong>Angler:</strong> {angler || 'Anonymous'}</p>
+                    {location && <p><strong>Location:</strong> {location}</p>}
+                    <p><strong>Caught:</strong> {new Date(timestamp?.toDate?.() || timestamp).toLocaleDateString()}</p>
+                </div>
+            </div>
+            {photo && (
+                <div className="catch-photo">
+                    <img src={photo} alt={`${species} catch`} />
+                </div>
+            )}
+        </div>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-        marginVertical: 8,
-        borderRadius: 8,
-        elevation: 2,
-    },
-    text: {
-        fontSize: 16,
-    },
-});
 
 export default CatchItem;

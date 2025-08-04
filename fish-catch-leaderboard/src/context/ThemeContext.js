@@ -1,26 +1,28 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { Appearance } from 'react-native';
 import { darkTheme, lightTheme } from '../theme/theme';
 
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-    const [theme, setTheme] = useState(Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme);
+    const [isDark, setIsDark] = useState(() => {
+        const saved = localStorage.getItem('theme');
+        return saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    });
+
+    const theme = isDark ? darkTheme : lightTheme;
 
     useEffect(() => {
-        const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-            setTheme(colorScheme === 'dark' ? darkTheme : lightTheme);
-        });
-
-        return () => subscription.remove();
-    }, []);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        document.body.style.backgroundColor = theme.background;
+        document.body.style.color = theme.text;
+    }, [isDark, theme]);
 
     const toggleTheme = () => {
-        setTheme(prevTheme => (prevTheme === darkTheme ? lightTheme : darkTheme));
+        setIsDark(prevIsDark => !prevIsDark);
     };
 
     return (
-        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ThemeContext.Provider value={{ theme, isDark, toggleTheme }}>
             {children}
         </ThemeContext.Provider>
     );

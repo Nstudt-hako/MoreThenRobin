@@ -1,14 +1,71 @@
-# Fish Catch Leaderboard
+# More Than Robin - Fish Catch Leaderboard
 
-This project is a mobile application built with React Native that allows users to track their fishing catches and view a leaderboard of personal bests. The app supports both Android and iOS platforms and features dark mode support with a material design aesthetic.
+Eine Web-Anwendung zum Verfolgen und Vergleichen von Angelausgängen zwischen Anglern.
 
-## Features
+## 🌐 Live Demo
 
-- **Leaderboard**: Displays the best catches per type and size for every user.
-- **Add Catch**: Users can add their catches with details such as fish type, size, and time of catch.
-- **User Authentication**: Secure login for users to manage their profiles and catches.
-- **Dark Mode Support**: Users can toggle between light and dark themes.
-- **Material Design**: The app follows material design principles for a modern look and feel.
+Die App ist auf GitHub Pages verfügbar: [https://Nstudt-hako.github.io/MoreThenRobin](https://Nstudt-hako.github.io/MoreThenRobin)
+
+## ✨ Features
+
+- **Leaderboard**: Sieh die größten Fänge aller Angler
+- **Responsive Design**: Funktioniert auf Desktop und Mobile
+- **Dark/Light Theme**: Automatische Theme-Erkennung mit manueller Umschaltung
+- **Modern UI**: Saubere, benutzerfreundliche Oberflächer
+
+## 🚀 Lokale Entwicklung
+
+```bash
+# Abhängigkeiten installieren
+npm install
+
+# Entwicklungsserver starten
+npm start
+
+# Build für Produktion erstellen
+npm run build
+
+# Tests ausführen
+npm test
+
+# Linting
+npm run lint
+```
+
+## 📦 Deployment
+
+Die App wird automatisch über GitHub Actions auf GitHub Pages deployed, wenn Änderungen in den `main` Branch gepusht werden.
+
+### Manuelle Deployment
+
+```bash
+# Build erstellen und auf GitHub Pages deployen
+npm run deploy
+```
+
+## 🛠 Technologie-Stack
+
+- **Frontend**: React 18
+- **Routing**: React Router v6
+- **Styling**: CSS3 mit CSS-in-JS
+- **Build**: Create React App
+- **Deployment**: GitHub Pages
+- **CI/CD**: GitHub Actions
+
+## 📱 Browser-Unterstützung
+
+- Chrome (aktuelle Version)
+- Firefox (aktuelle Version)
+- Safari (aktuelle Version)
+- Edge (aktuelle Version)
+
+## 🎣 Über das Projekt
+
+"More Than Robin" ist eine Anwendung für Angler, um ihre Fänge zu dokumentieren und mit anderen zu vergleichen. Die App wurde von einer React Native Anwendung zu einer Progressive Web App umgebaut, um eine breitere Verfügbarkeit zu ermöglichen.
+
+## 📄 Lizenz
+
+Dieses Projekt ist unter der MIT-Lizenz lizenziert.
 
 ## Project Structure
 

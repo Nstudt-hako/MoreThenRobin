@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import LeaderboardList from '../components/LeaderboardList';
 import { AuthContext } from '../context/AuthContext';
 import { getLeaderboardData } from '../api/firebase';
 import { ThemeContext } from '../context/ThemeContext';
+import './LeaderboardScreen.css';
 
 const LeaderboardScreen = () => {
     const { user } = useContext(AuthContext);
@@ -28,37 +28,21 @@ const LeaderboardScreen = () => {
 
     if (loading) {
         return (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color={theme.primary} />
-            </View>
+            <div className="loading-container">
+                <div className="spinner" style={{ borderTopColor: theme.primary }}></div>
+                <p style={{ color: theme.text }}>Loading leaderboard...</p>
+            </div>
         );
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={[styles.title, { color: theme.text }]}>Leaderboard</Text>
+        <div className="leaderboard-container" style={{ backgroundColor: theme.background }}>
+            <h1 className="leaderboard-title" style={{ color: theme.text }}>
+                🏆 Leaderboard
+            </h1>
             <LeaderboardList data={leaderboardData} />
-        </View>
+        </div>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: '#ffffff',
-    },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#ffffff',
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 16,
-    },
-});
 
 export default LeaderboardScreen;
