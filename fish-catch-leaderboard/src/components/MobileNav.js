@@ -27,8 +27,14 @@ const MobileNav = () => {
       {items.map(item => {
         const active = location.pathname === item.to;
         return (
-          <NavLink key={item.to} to={item.to} className={`mobile-nav-item ${active ? 'active' : ''} ${item.accent ? 'accent' : ''}`}> 
-            <span className="icon" aria-hidden>{item.icon}</span>
+          <NavLink
+            key={item.to}
+            to={item.to}
+            aria-label={item.label}
+            className={`mobile-nav-item ${active ? 'active' : ''} ${item.accent ? 'accent' : ''}`}
+            data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g,'-')}`}
+          > 
+            <span className="icon" aria-hidden="true">{item.icon}</span>
             <span className="label">{item.label}</span>
           </NavLink>
         );
