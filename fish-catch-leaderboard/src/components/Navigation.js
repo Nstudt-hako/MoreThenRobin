@@ -3,9 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import ThemeToggle from './ThemeToggle';
+import { useGroups } from '../context/GroupContext';
 
 const Navigation = () => {
   const { user, logout, isAdmin } = useContext(AuthContext);
+  const { groups, activeGroupId, setActiveGroupId } = useGroups();
   const { theme } = useContext(ThemeContext);
   const location = useLocation();
 
@@ -17,6 +19,15 @@ const Navigation = () => {
         </Link>
         
         <div className="nav-links">
+          {user && groups.length > 0 && (
+            <select
+              value={activeGroupId || ''}
+              onChange={(e)=> setActiveGroupId(e.target.value)}
+              style={{ padding:'0.3rem 0.4rem', fontSize:'0.8rem' }}
+            >
+              {groups.map(g => <option key={g.id} value={g.id}>{g.name}</option>)}
+            </select>
+          )}
           <Link 
             to="/home" 
             className={`nav-link ${location.pathname === '/home' ? 'active' : ''}`}
@@ -39,6 +50,13 @@ const Navigation = () => {
                 style={{ color: theme.text }}
               >
                 Add Catch
+              </Link>
+              <Link 
+                to="/personal-bests" 
+                className={`nav-link ${location.pathname === '/personal-bests' ? 'active' : ''}`}
+                style={{ color: theme.text }}
+              >
+                Personal Bests
               </Link>
               <Link 
                 to="/profile" 
@@ -73,6 +91,13 @@ const Navigation = () => {
             >
               Login
             </Link>
+          )}
+          {user && (
+            <Link 
+              to="/groups" 
+              className={`nav-link ${location.pathname === '/groups' ? 'active' : ''}`}
+              style={{ color: theme.text }}
+            >Groups</Link>
           )}
           <ThemeToggle />
         </div>

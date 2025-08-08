@@ -8,6 +8,10 @@ import AddCatchScreen from './screens/AddCatchScreen';
 import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import ModerationScreen from './screens/ModerationScreen';
+import PersonalBestsScreen from './screens/PersonalBestsScreen';
+import GroupManagementScreen from './screens/GroupManagementScreen';
+import { ToastProvider } from './context/ToastContext';
+import { GroupProvider } from './context/GroupContext';
 import Navigation from './components/Navigation';
 import './main.css';
 
@@ -15,7 +19,9 @@ const App = () => {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <Router basename="/MoreThenRobin">
+  <ToastProvider>
+  <GroupProvider>
+  <Router basename="/MoreThenRobin">
           <div className="App">
             <Navigation />
             <main className="main-content">
@@ -27,10 +33,14 @@ const App = () => {
                 <Route path="/login" element={<LoginScreen />} />
                 <Route path="/profile" element={<ProfileScreen />} />
                 <Route path="/moderation" element={<ModerationScreen />} />
+                <Route path="/personal-bests" element={<PersonalBestsScreen />} />
+                <Route path="/groups" element={<GroupManagementScreen />} />
               </Routes>
             </main>
           </div>
-        </Router>
+  </Router>
+  </GroupProvider>
+        </ToastProvider>
       </ThemeProvider>
     </AuthProvider>
   );

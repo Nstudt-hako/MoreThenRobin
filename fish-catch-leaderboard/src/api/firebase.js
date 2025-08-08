@@ -57,6 +57,18 @@ let catches = [
 	}
 ];
 
+// --- Groups (Private Leaderboards) ---
+/** @typedef {{id:string,name:string,members:string[],inviteToken:string,createdAt:number}} Group */
+let groups = [
+	{
+		id: 'g_default',
+		name: 'Open Lake Crew',
+		members: ['Alice','Bob','Charlie','Dana','demo@example.com'],
+		inviteToken: 'join-open-lake',
+		createdAt: Date.now() - 1000*60*60*24
+	}
+];
+
 /**
  * Simulate network latency.
  * @param {any} value
@@ -193,7 +205,7 @@ export const getCatchById = async (id) => withLatency(catches.find(c => c.id ===
  * @param {{species?:string, timeframe?:'24h'|'7d'|'30d'|'all', search?:string, sort?:'size'|'recent', onlyVerified?:boolean}} criteria
  */
 export const filterLeaderboard = async (criteria = {}) => {
-	const { species, timeframe='all', search='', sort='size', onlyVerified=true } = criteria;
+	const { species, timeframe='all', search='', sort='size', onlyVerified=true, page=1, pageSize=20 } = criteria;
 	const now = Date.now();
 	let minTs = 0;
 	if (timeframe === '24h') minTs = now - 1000*60*60*24;
@@ -207,9 +219,78 @@ export const filterLeaderboard = async (criteria = {}) => {
 		const s = search.toLowerCase();
 		list = list.filter(c => c.species.toLowerCase().includes(s) || c.angler.toLowerCase().includes(s));
 	}
-	if (sort === 'size') list = [...list].sort((a,b)=> b.size - a.size);
-	else if (sort === 'recent') list = [...list].sort((a,b)=> b.timestamp - a.timestamp);
-	return withLatency(list);
+		if (sort === 'size') list = [...list].sort((a,b)=> b.size - a.size);
+		else if (sort === 'recent') list = [...list].sort((a,b)=> b.timestamp - a.timestamp);
+
+		const total = list.length;
+		const start = (page - 1) * pageSize;
+		const paged = list.slice(start, start + pageSize);
+		return withLatency({ data: paged, total, page, pageSize });
+};
+
+/**
+ * Compute personal bests for user (highest size per species)
+ * @param {string} userId
+ * @returns {Promise<Array<CatchRecord & {rank:number}>>}
+ */
+export const getPersonalBests = async (userId) => {
+	const userCatches = catches.filter(c => !c.isDeleted && c.angler === userId && c.verified);
+	const bestBySpecies = new Map();
+	for (const c of userCatches) {
+		const existing = bestBySpecies.get(c.species);
+		if (!existing || c.size > existing.size) bestBySpecies.set(c.species, c);
+	}
+	// Add rank (position in global size order for that species)
+	const result = Array.from(bestBySpecies.values()).map(c => {
+		const speciesSorted = catches.filter(x => x.species === c.species && !x.isDeleted && x.verified).sort((a,b)=> b.size - a.size);
+		const rank = speciesSorted.findIndex(x => x.id === c.id) + 1;
+		return { ...c, rank };
+	}).sort((a,b)=> a.species.localeCompare(b.species));
+	return withLatency(result);
+};
+
+// ---- Group Functions ----
+
+/** Create a new group */
+export const createGroup = async (name, ownerId) => {
+	const id = `gr_${Math.random().toString(36).slice(2,9)}`;
+	const inviteToken = `iv_${Math.random().toString(36).slice(2,11)}`;
+	const group = { id, name: name.trim(), members: [ownerId], inviteToken, createdAt: Date.now() };
+	groups.push(group);
+	return withLatency(group);
+};
+
+/** Get group by id */
+export const getGroup = async (id) => withLatency(groups.find(g => g.id === id) || null);
+
+/** List groups for user */
+export const listUserGroups = async (userId) => withLatency(groups.filter(g => g.members.includes(userId)));
+
+/** Join group via invite token; returns group or null */
+export const joinGroupByInvite = async (token, userId) => {
+	const g = groups.find(gr => gr.inviteToken === token);
+	if (!g) return withLatency(null);
+	if (!g.members.includes(userId)) g.members.push(userId);
+	return withLatency(g);
+};
+
+/** Regenerate invite token (admin/owner) */
+export const regenerateInviteToken = async (groupId) => {
+	const g = groups.find(gr => gr.id === groupId);
+	if (!g) throw new Error('Group not found');
+	g.inviteToken = `iv_${Math.random().toString(36).slice(2,11)}`;
+	return withLatency(g.inviteToken);
+};
+
+/** Group leaderboard: filter catches to members */
+export const groupLeaderboard = async (groupId, criteria = {}) => {
+	const g = groups.find(gr => gr.id === groupId);
+	if (!g) throw new Error('Group not found');
+	// Reuse filterLeaderboard logic – but restrict to group member anglers
+	const { data, page, pageSize } = await filterLeaderboard(criteria);
+	const memberSet = new Set(g.members);
+	const filtered = data.filter(c => memberSet.has(c.angler));
+	return { data: filtered, total: filtered.length, page, pageSize, group: g };
 };
 
 // No default export to encourage named import usage.

@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
 import { AuthContext } from '../context/AuthContext';
 import { addCatch } from '../api/firebase';
+import { useToast } from '../context/ToastContext';
 
 // Initial form state constant for clarity & reuse
 const INITIAL_FORM = { species: '', size: '', location: '', photo: '' };
@@ -13,6 +14,7 @@ const AddCatchScreen = () => {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
+    const toast = useToast();
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -44,11 +46,13 @@ const AddCatchScreen = () => {
                 photo: form.photo.trim() || undefined
             });
             setSuccess(true);
+            toast.push('Catch saved', 'success');
             setForm(INITIAL_FORM);
         } catch (err) {
             if (err.code === 'rate/limit-exceeded') setError(err.message);
             else if (err.code === 'photo/required') setError(err.message);
             else setError('Could not save catch');
+            toast.push('Could not save catch', 'error');
         } finally {
             setSubmitting(false);
         }
