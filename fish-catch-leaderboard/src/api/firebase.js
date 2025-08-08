@@ -249,6 +249,35 @@ export const getPersonalBests = async (userId) => {
 	return withLatency(result);
 };
 
+/**
+ * Get aggregate statistics for a user.
+ * @param {string} userId
+ */
+export const getUserStats = async (userId) => {
+	const userCatches = catches.filter(c => !c.isDeleted && c.angler === userId);
+	if (!userCatches.length) return withLatency({ total:0, verified:0, species:0, bestSize:0 });
+	const verified = userCatches.filter(c=>c.verified).length;
+	const speciesSet = new Set(userCatches.map(c=>c.species));
+	const bestSize = Math.max(...userCatches.map(c=>c.size));
+	return withLatency({ total:userCatches.length, verified, species:speciesSet.size, bestSize });
+};
+
+/**
+ * Compute simple achievement badges for a user.
+ * @param {string} userId
+ */
+export const getUserAchievements = async (userId) => {
+	const stats = await getUserStats(userId);
+	const list = [];
+	if (stats.total >= 1) list.push({ code:'first_catch', label:'First Catch', level:'bronze' });
+	if (stats.total >= 5) list.push({ code:'five_catches', label:'Five Catches', level:'bronze' });
+	if (stats.total >= 15) list.push({ code:'fifteen_catches', label:'Angler', level:'silver' });
+	if (stats.species >= 3) list.push({ code:'species_diversity', label:'Species Explorer', level:'silver' });
+	if (stats.bestSize >= 80) list.push({ code:'big_fish', label:'Big Fish 80cm+', level:'gold' });
+	if (stats.bestSize >= 100) list.push({ code:'trophy_fish', label:'Trophy 100cm+', level:'platinum' });
+	return withLatency({ achievements:list, stats });
+};
+
 // ---- Group Functions ----
 
 /** Create a new group */

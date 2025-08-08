@@ -10,6 +10,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import ModerationScreen from './screens/ModerationScreen';
 import PersonalBestsScreen from './screens/PersonalBestsScreen';
 import GroupManagementScreen from './screens/GroupManagementScreen';
+import MobileNav from './components/MobileNav';
 import { ToastProvider } from './context/ToastContext';
 import { GroupProvider } from './context/GroupContext';
 import Navigation from './components/Navigation';
@@ -37,6 +38,7 @@ const App = () => {
                 <Route path="/groups" element={<GroupManagementScreen />} />
               </Routes>
             </main>
+            <MobileNav />
           </div>
   </Router>
   </GroupProvider>

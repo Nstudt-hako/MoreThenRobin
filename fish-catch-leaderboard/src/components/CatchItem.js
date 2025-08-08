@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
+import Avatar from './Avatar';
 
 const CatchItem = ({ catchData }) => {
     const { species, size, location, angler, timestamp, photo, verified, flagged } = catchData;
@@ -7,24 +8,29 @@ const CatchItem = ({ catchData }) => {
 
     return (
         <div className="catch-item" style={{ backgroundColor: theme.surface, color: theme.text }}>
-            <div className="catch-info">
-                <h3 className="catch-species" style={{ color: theme.primary, display:'flex', alignItems:'center', gap:'0.5rem' }}>
-                    🐟 {species || 'Unknown Species'}
-                    {verified ? <span style={{ background:'#2e7d32', color:'#fff', padding:'0.15rem 0.5rem', borderRadius:'12px', fontSize:'0.65rem' }}>VERIFIED</span> : <span style={{ background:'#b26a00', color:'#fff', padding:'0.15rem 0.5rem', borderRadius:'12px', fontSize:'0.65rem' }}>PENDING</span>}
-                    {flagged && <span style={{ background:'#c62828', color:'#fff', padding:'0.15rem 0.5rem', borderRadius:'12px', fontSize:'0.65rem' }}>FLAGGED</span>}
-                </h3>
-                <div className="catch-details">
-                    <p><strong>Size:</strong> {size} cm</p>
-                    <p><strong>Angler:</strong> {angler || 'Anonymous'}</p>
-                    {location && <p><strong>Location:</strong> {location}</p>}
-                    <p><strong>Caught:</strong> {new Date(timestamp?.toDate ? timestamp.toDate() : timestamp).toLocaleDateString()}</p>
+            <div style={{ display:'flex', gap:'0.9rem', alignItems:'flex-start' }}>
+                <Avatar name={angler || 'Anonymous'} size={46} />
+                <div style={{ flex:1 }}>
+                    <div style={{ display:'flex', alignItems:'center', gap:'.55rem', flexWrap:'wrap' }}>
+                        <h3 className="catch-species" style={{ color: theme.primary, margin:0 }}>
+                            {species || 'Unknown Species'}
+                        </h3>
+                        {verified ? <span className="badge badge-success">Verified</span> : <span className="badge badge-warning">Pending</span>}
+                        {flagged && <span className="badge badge-danger">Flagged</span>}
+                    </div>
+                    <div className="catch-details" style={{ marginTop:'.4rem' }}>
+                        <p><strong>Size:</strong> {size} cm</p>
+                        <p><strong>Angler:</strong> {angler || 'Anonymous'}</p>
+                        {location && <p><strong>Location:</strong> {location}</p>}
+                        <p><strong>Caught:</strong> {new Date(timestamp?.toDate ? timestamp.toDate() : timestamp).toLocaleDateString()}</p>
+                    </div>
                 </div>
+                {photo && (
+                    <div style={{ width:90, aspectRatio:'3/2', borderRadius:12, overflow:'hidden', boxShadow:'0 4px 10px -2px rgba(0,0,0,0.3)' }}>
+                        <img src={photo} alt={`${species} catch`} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+                    </div>
+                )}
             </div>
-            {photo && (
-                <div className="catch-photo">
-                    <img src={photo} alt={`${species} catch`} />
-                </div>
-            )}
         </div>
     );
 };
