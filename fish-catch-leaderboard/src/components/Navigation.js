@@ -12,6 +12,7 @@ const Navigation = () => {
   const location = useLocation();
 
   return (
+    <>
     <nav className="navigation" style={{ backgroundColor: theme.surface }}>
       <div className="nav-container">
         <Link to="/home" className="nav-logo" style={{ color: theme.primary }}>
@@ -102,7 +103,11 @@ const Navigation = () => {
           <ThemeToggle />
         </div>
       </div>
-    </nav>
+  </nav>
+    {user && (
+      <a href="/MoreThenRobin/add-catch" aria-label="Add Catch" className="fab-add-catch">+</a>
+    )}
+    </>
   );
 };
 
