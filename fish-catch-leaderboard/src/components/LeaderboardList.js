@@ -1,34 +1,15 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { getLeaderboardData } from '../api/firebase';
+import React, { useContext } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
 import CatchItem from './CatchItem';
 
-const LeaderboardList = ({ data }) => {
-    const [catches, setCatches] = useState(data || []);
+/**
+ * Presentational component rendering an ordered list of catches.
+ * Expects data to be pre-sorted (e.g. by size desc) by caller.
+ */
+const LeaderboardList = ({ data = [] }) => {
     const { theme } = useContext(ThemeContext);
 
-    useEffect(() => {
-        if (data) {
-            setCatches(data);
-            return;
-        }
-
-        // Use the mock data function instead of Firebase collection
-        const fetchData = async () => {
-            try {
-                const leaderboardData = await getLeaderboardData();
-                setCatches(leaderboardData);
-            } catch (error) {
-                // eslint-disable-next-line no-console
-                console.error('Error fetching leaderboard data:', error);
-                setCatches([]);
-            }
-        };
-
-        fetchData();
-    }, [data]);
-
-    if (catches.length === 0) {
+    if (!data.length) {
         return (
             <div className="empty-state" style={{ color: theme.text }}>
                 <p>No catches recorded yet. Be the first to add one!</p>
@@ -38,7 +19,7 @@ const LeaderboardList = ({ data }) => {
 
     return (
         <div className="leaderboard-list">
-            {catches.map((catchData, index) => (
+            {data.map((catchData, index) => (
                 <div key={catchData.id} className="leaderboard-item">
                     <div className="rank-badge" style={{ backgroundColor: theme.primary }}>
                         #{index + 1}
