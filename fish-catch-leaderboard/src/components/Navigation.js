@@ -5,7 +5,7 @@ import { ThemeContext } from '../context/ThemeContext';
 import ThemeToggle from './ThemeToggle';
 
 const Navigation = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, isAdmin } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
   const location = useLocation();
 
@@ -47,6 +47,15 @@ const Navigation = () => {
               >
                 Profile
               </Link>
+              {isAdmin && (
+                <Link 
+                  to="/moderation" 
+                  className={`nav-link ${location.pathname === '/moderation' ? 'active' : ''}`}
+                  style={{ color: theme.text }}
+                >
+                  Moderation
+                </Link>
+              )}
               <button 
                 onClick={logout}
                 className="nav-button"

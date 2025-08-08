@@ -3,11 +3,12 @@ import React, { createContext, useState } from 'react';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(null); // { id,email,role }
 
     const login = async (email) => {
-        // Mock login for demo purposes
-        setUser({ email, id: 'demo-user' });
+        // Simple role inference: emails ending with 'admin.test' become admin
+        const role = email.endsWith('admin.test') ? 'admin' : 'user';
+        setUser({ email, id: email, role });
         return Promise.resolve();
     };
 
@@ -17,14 +18,15 @@ export const AuthProvider = ({ children }) => {
     };
 
     const register = async (email) => {
-        // Mock register for demo purposes
-        setUser({ email, id: 'demo-user' });
+        const role = 'user';
+        setUser({ email, id: email, role });
         return Promise.resolve();
     };
 
     return (
         <AuthContext.Provider value={{
             user,
+            isAdmin: user?.role === 'admin',
             login,
             logout,
             register

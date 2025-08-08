@@ -7,6 +7,7 @@ import LeaderboardScreen from './screens/LeaderboardScreen';
 import AddCatchScreen from './screens/AddCatchScreen';
 import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import ModerationScreen from './screens/ModerationScreen';
 import Navigation from './components/Navigation';
 import './main.css';
 
@@ -25,6 +26,7 @@ const App = () => {
                 <Route path="/add-catch" element={<AddCatchScreen />} />
                 <Route path="/login" element={<LoginScreen />} />
                 <Route path="/profile" element={<ProfileScreen />} />
+                <Route path="/moderation" element={<ModerationScreen />} />
               </Routes>
             </main>
           </div>

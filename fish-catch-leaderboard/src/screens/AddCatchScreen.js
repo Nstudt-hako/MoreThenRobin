@@ -46,7 +46,9 @@ const AddCatchScreen = () => {
             setSuccess(true);
             setForm(INITIAL_FORM);
         } catch (err) {
-            setError('Could not save catch');
+            if (err.code === 'rate/limit-exceeded') setError(err.message);
+            else if (err.code === 'photo/required') setError(err.message);
+            else setError('Could not save catch');
         } finally {
             setSubmitting(false);
         }
