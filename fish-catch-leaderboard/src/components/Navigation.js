@@ -104,9 +104,7 @@ const Navigation = () => {
         </div>
       </div>
   </nav>
-    {user && (
-      <a href="/MoreThenRobin/add-catch" aria-label="Add Catch" className="fab-add-catch">+</a>
-    )}
+  {/* FAB entfernt: redundanter Add-Catch Button, da im MobileNav vorhanden */}
     </>
   );
 };
