@@ -1,0 +1,9 @@
+{
+  "short_name": "More Than Robin",
+  "name": "More Than Robin - Fish Catch Leaderboard",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
