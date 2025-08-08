@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import HomeScreen from './screens/HomeScreen';
@@ -36,6 +36,8 @@ const App = () => {
                 <Route path="/moderation" element={<ModerationScreen />} />
                 <Route path="/personal-bests" element={<PersonalBestsScreen />} />
                 <Route path="/groups" element={<GroupManagementScreen />} />
+                {/* Wildcard route: redirect any unknown path to home */}
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </main>
             <MobileNav />

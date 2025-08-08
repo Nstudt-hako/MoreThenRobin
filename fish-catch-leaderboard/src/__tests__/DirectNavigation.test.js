@@ -12,4 +12,11 @@ describe('Direct navigation', () => {
     // Ein eindeutiges Element aus HomeScreen prüfen
     expect(screen.getByRole('heading', { name: /more than robin/i })).toBeInTheDocument();
   });
+
+  it('redirects unknown path to home (wildcard)', () => {
+    // Simulate direct navigation to an unknown route
+    window.history.pushState({}, 'Unknown', '/MoreThenRobin/does-not-exist');
+    render(<App />);
+    expect(screen.getByRole('heading', { name: /more than robin/i })).toBeInTheDocument();
+  });
 });
