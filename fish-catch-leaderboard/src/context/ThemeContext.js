@@ -35,8 +35,13 @@ const darkTheme = {
 
 export const ThemeProvider = ({ children }) => {
     const [isDark, setIsDark] = useState(() => {
-        const saved = localStorage.getItem('theme');
-        return saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let saved;
+        try { saved = localStorage.getItem('theme'); } catch { /* ignore */ }
+        if (saved) return saved === 'dark';
+        if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+            try { return window.matchMedia('(prefers-color-scheme: dark)').matches; } catch { return false; }
+        }
+        return false; // default in non-browser (tests / SSR)
     });
 
     const theme = isDark ? darkTheme : lightTheme;
