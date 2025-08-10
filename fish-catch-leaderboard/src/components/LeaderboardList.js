@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { ThemeContext } from "../context/ThemeContext";
+import React from "react";
 import CatchItem from "./CatchItem";
 
 /**
@@ -7,11 +6,9 @@ import CatchItem from "./CatchItem";
  * Expects data to be pre-sorted (e.g. by size desc) by caller.
  */
 const LeaderboardList = ({ data = [] }) => {
-  const { theme } = useContext(ThemeContext);
-
   if (!data.length) {
     return (
-      <div className="empty-state" style={{ color: theme.text }}>
+      <div className="empty-state">
         <p>No catches recorded yet. Be the first to add one!</p>
       </div>
     );

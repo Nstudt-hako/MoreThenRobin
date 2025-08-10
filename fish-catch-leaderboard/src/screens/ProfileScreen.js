@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ThemeContext } from "../context/ThemeContext";
 import { AuthContext } from "../context/AuthContext";
 import { getUserAchievements } from "../api/firebase";
 import Avatar from "../components/Avatar";
 
 const ProfileScreen = () => {
-  const { theme } = useContext(ThemeContext);
   const { user } = useContext(AuthContext);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,8 +22,8 @@ const ProfileScreen = () => {
 
   if (!user) {
     return (
-      <div style={{ padding: "2rem", textAlign: "center", color: theme.text }}>
-        <h1 style={{ color: theme.primary }}>Profile</h1>
+      <div style={{ padding: "2rem", textAlign: "center" }}>
+        <h1 style={{ color: "var(--color-primary)" }}>Profile</h1>
         <p>Please log in.</p>
       </div>
     );
@@ -34,7 +32,6 @@ const ProfileScreen = () => {
   return (
     <div
       style={{
-        color: theme.text,
         width: "100%",
         maxWidth: "900px",
         margin: "0 auto",
@@ -56,11 +53,11 @@ const ProfileScreen = () => {
         <div style={{ minWidth: 0 }}>
           <h1
             style={{
-              color: theme.primary,
               margin: 0,
               fontSize: "1.9rem",
               wordBreak: "break-word",
               overflowWrap: "anywhere",
+              color: "var(--color-primary)",
             }}
           >
             {user.email}
