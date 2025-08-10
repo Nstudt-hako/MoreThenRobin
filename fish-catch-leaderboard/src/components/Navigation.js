@@ -5,6 +5,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import ThemeToggle from "./ThemeToggle";
 import { useGroups } from "../context/GroupContext";
 import GroupSelect from "./GroupSelect";
+import Avatar from "./Avatar";
 
 const Navigation = () => {
   const { user, logout, isAdmin } = useContext(AuthContext);
@@ -33,7 +34,10 @@ const Navigation = () => {
               }`}
               style={{ color: theme.text }}
             >
-              Home
+              <span className="icon" aria-hidden>
+                🏠
+              </span>
+              <span className="label">Home</span>
             </Link>
             <Link
               to="/leaderboard"
@@ -42,7 +46,10 @@ const Navigation = () => {
               }`}
               style={{ color: theme.text }}
             >
-              Leaderboard
+              <span className="icon" aria-hidden>
+                🏆
+              </span>
+              <span className="label">Leaderboard</span>
             </Link>
             {user && (
               <>
@@ -53,7 +60,10 @@ const Navigation = () => {
                   }`}
                   style={{ color: theme.text }}
                 >
-                  Add Catch
+                  <span className="icon" aria-hidden>
+                    ➕
+                  </span>
+                  <span className="label">Add Catch</span>
                 </Link>
                 <Link
                   to="/personal-bests"
@@ -62,7 +72,10 @@ const Navigation = () => {
                   }`}
                   style={{ color: theme.text }}
                 >
-                  Personal Bests
+                  <span className="icon" aria-hidden>
+                    ⭐
+                  </span>
+                  <span className="label">Personal Bests</span>
                 </Link>
                 <Link
                   to="/profile"
@@ -71,7 +84,10 @@ const Navigation = () => {
                   }`}
                   style={{ color: theme.text }}
                 >
-                  Profile
+                  <span className="icon" aria-hidden>
+                    👤
+                  </span>
+                  <span className="label">Profile</span>
                 </Link>
                 {isAdmin && (
                   <Link
@@ -81,16 +97,9 @@ const Navigation = () => {
                     }`}
                     style={{ color: theme.text }}
                   >
-                    Moderation
+                    <span className="label">Moderation</span>
                   </Link>
                 )}
-                <button
-                  onClick={logout}
-                  className="nav-button"
-                  style={{ color: theme.text, borderColor: theme.text }}
-                >
-                  Logout
-                </button>
               </>
             )}
             {!user && (
@@ -101,7 +110,10 @@ const Navigation = () => {
                 }`}
                 style={{ color: theme.text }}
               >
-                Login
+                <span className="icon" aria-hidden>
+                  🔐
+                </span>
+                <span className="label">Login</span>
               </Link>
             )}
             {user && (
@@ -112,10 +124,41 @@ const Navigation = () => {
                 }`}
                 style={{ color: theme.text }}
               >
-                Groups
+                <span className="icon" aria-hidden>
+                  👥
+                </span>
+                <span className="label">Groups</span>
               </Link>
             )}
-            <ThemeToggle />
+
+            {/* Rail footer (sticks to bottom on desktop) */}
+            <div className="rail-footer">
+              <ThemeToggle />
+              {user ? (
+                <div className="user-card" aria-label="Current user">
+                  <div className="user-card-row">
+                    <Avatar name={user.email} size={36} />
+                    <div className="user-meta">
+                      <strong className="user-name">
+                        {user.email.split("@")[0]}
+                      </strong>
+                      <span className="user-email muted">{user.email}</span>
+                    </div>
+                    <button
+                      onClick={logout}
+                      className="nav-button small"
+                      title="Logout"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <Link to="/login" className="nav-link nav-cta">
+                  Sign in
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </nav>
