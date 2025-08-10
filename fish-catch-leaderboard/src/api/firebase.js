@@ -13,47 +13,75 @@
  * @property {string=} photo Optional photo URL
  */
 
+// Helper to generate stable, real photo URLs from Picsum
+const lockSeed = (id) => Array.from(id).reduce((a, c) => a + c.charCodeAt(0), 0) % 100000;
+const photoFor = (keyword, seed) => `https://picsum.photos/seed/${seed}-${encodeURIComponent(keyword)}/480/320`;
+
 /**
  * Internal in-memory store. Acts like a collection table.
  * Pre-populated with sample data to showcase the leaderboard.
  * @type {CatchRecord[]}
  */
 let catches = [
+	// Demo user rich dataset (so Profile/Bests/Achievements look real)
 	{
-		id: 'c1',
-		species: 'Northern Pike',
-		size: 112,
-		angler: 'Alice',
-		location: 'Lake Superior',
-	timestamp: Date.now() - 1000 * 60 * 60 * 24 * 2,
-		photo: 'https://placehold.co/120x80?text=Pike'
+		id: 'd1', species: 'Northern Pike', size: 102, angler: 'demo@example.com', location: 'Open Lake',
+		timestamp: Date.now() - 1000 * 60 * 60 * 3, photo: photoFor('Northern Pike fish', lockSeed('d1')), verified: true, flagged: false, isDeleted: false
 	},
 	{
-		id: 'c2',
-		species: 'Rainbow Trout',
-		size: 54,
-		angler: 'Bob',
-		location: 'Rocky River',
-		timestamp: Date.now() - 1000 * 60 * 60 * 5,
-		photo: 'https://placehold.co/120x80?text=Trout'
+		id: 'd2', species: 'Rainbow Trout', size: 58, angler: 'demo@example.com', location: 'Rocky River',
+		timestamp: Date.now() - 1000 * 60 * 60 * 20, photo: photoFor('Rainbow Trout fish', lockSeed('d2')), verified: true, flagged: false, isDeleted: false
 	},
 	{
-		id: 'c3',
-		species: 'Atlantic Salmon',
-		size: 89,
-		angler: 'Charlie',
-		location: 'Salmon Bay',
-		timestamp: Date.now() - 1000 * 60 * 60 * 24 * 7,
-		photo: 'https://placehold.co/120x80?text=Salmon'
+		id: 'd3', species: 'Atlantic Salmon', size: 86, angler: 'demo@example.com', location: 'Salmon Bay',
+		timestamp: Date.now() - 1000 * 60 * 60 * 24 * 2, photo: photoFor('Atlantic Salmon fish', lockSeed('d3')), verified: true, flagged: false, isDeleted: false
 	},
 	{
-		id: 'c4',
-		species: 'Catfish',
-		size: 76,
-		angler: 'Dana',
-		location: 'Muddy Waters',
-		timestamp: Date.now() - 1000 * 60 * 30,
-		photo: 'https://placehold.co/120x80?text=Catfish'
+		id: 'd4', species: 'Largemouth Bass', size: 48, angler: 'demo@example.com', location: 'Willow Pond',
+		timestamp: Date.now() - 1000 * 60 * 60 * 24 * 6, photo: photoFor('Largemouth Bass fish', lockSeed('d4')), verified: true, flagged: false, isDeleted: false
+	},
+	{
+		id: 'd5', species: 'Perch', size: 31, angler: 'demo@example.com', location: 'Harbor Docks',
+		timestamp: Date.now() - 1000 * 60 * 30, photo: photoFor('Perch fish', lockSeed('d5')), verified: true, flagged: false, isDeleted: false
+	},
+	{
+		id: 'd6', species: 'Catfish', size: 72, angler: 'demo@example.com', location: 'Muddy Waters',
+		timestamp: Date.now() - 1000 * 60 * 60 * 24 * 10, photo: photoFor('Catfish', lockSeed('d6')), verified: true, flagged: false, isDeleted: false
+	},
+	{
+		id: 'd7', species: 'Northern Pike', size: 95, angler: 'demo@example.com', location: 'Reed Banks',
+		timestamp: Date.now() - 1000 * 60 * 60 * 8, photo: photoFor('Northern Pike fish', lockSeed('d7')), verified: true, flagged: false, isDeleted: false
+	},
+
+	// Other users (for global board realism)
+	{
+		id: 'c1', species: 'Northern Pike', size: 112, angler: 'Alice', location: 'Lake Superior',
+		timestamp: Date.now() - 1000 * 60 * 60 * 24 * 2, photo: photoFor('Northern Pike fish', lockSeed('c1')), verified: true, flagged: false, isDeleted: false
+	},
+	{
+		id: 'c2', species: 'Rainbow Trout', size: 54, angler: 'Bob', location: 'Rocky River',
+		timestamp: Date.now() - 1000 * 60 * 60 * 5, photo: photoFor('Rainbow Trout fish', lockSeed('c2')), verified: true, flagged: false, isDeleted: false
+	},
+	{
+		id: 'c3', species: 'Atlantic Salmon', size: 89, angler: 'Charlie', location: 'Salmon Bay',
+		timestamp: Date.now() - 1000 * 60 * 60 * 24 * 7, photo: photoFor('Atlantic Salmon fish', lockSeed('c3')), verified: true, flagged: false, isDeleted: false
+	},
+	{
+		id: 'c4', species: 'Catfish', size: 76, angler: 'Dana', location: 'Muddy Waters',
+		timestamp: Date.now() - 1000 * 60 * 30, photo: photoFor('Catfish', lockSeed('c4')), verified: true, flagged: false, isDeleted: false
+	},
+	{
+		id: 'c5', species: 'Perch', size: 35, angler: 'Alice', location: 'Harbor Docks',
+		timestamp: Date.now() - 1000 * 60 * 60 * 12, photo: photoFor('Perch fish', lockSeed('c5')), verified: true, flagged: false, isDeleted: false
+	},
+	{
+		id: 'c6', species: 'Largemouth Bass', size: 52, angler: 'Bob', location: 'Willow Pond',
+		timestamp: Date.now() - 1000 * 60 * 60 * 36, photo: photoFor('Largemouth Bass fish', lockSeed('c6')), verified: true, flagged: false, isDeleted: false
+	},
+	// One pending to demonstrate moderation when logged as admin
+	{
+		id: 'c7', species: 'Northern Pike', size: 120, angler: 'Charlie', location: 'Deep Channel',
+		timestamp: Date.now() - 1000 * 60 * 60 * 18, photo: photoFor('Northern Pike fish', lockSeed('c7')), verified: false, flagged: false, isDeleted: false
 	}
 ];
 
@@ -66,6 +94,13 @@ let groups = [
 		members: ['Alice','Bob','Charlie','Dana','demo@example.com'],
 		inviteToken: 'join-open-lake',
 		createdAt: Date.now() - 1000*60*60*24
+	},
+	{
+		id: 'g_river',
+		name: 'River Rats',
+		members: ['Bob','demo@example.com'],
+		inviteToken: 'join-river-rats',
+		createdAt: Date.now() - 1000*60*60*48
 	}
 ];
 

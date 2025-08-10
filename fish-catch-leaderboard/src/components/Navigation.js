@@ -74,11 +74,6 @@ const Navigation = () => {
             <span className="icon">🏆</span>
             <span className="label">Leaderboard</span>
           </NavLink>
-          {!user && (
-            <Link to="/login" className="nav-link nav-cta">
-              🔐 Login
-            </Link>
-          )}
           {user && (
             <NavLink
               to="/groups"
