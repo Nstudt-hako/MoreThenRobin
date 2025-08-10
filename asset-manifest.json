@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/MoreThenRobin/static/css/main.a6c57a79.css",
+    "main.js": "/MoreThenRobin/static/js/main.32536717.js",
+    "index.html": "/MoreThenRobin/index.html",
+    "main.a6c57a79.css.map": "/MoreThenRobin/static/css/main.a6c57a79.css.map",
+    "main.32536717.js.map": "/MoreThenRobin/static/js/main.32536717.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a6c57a79.css",
+    "static/js/main.32536717.js"
+  ]
+}
